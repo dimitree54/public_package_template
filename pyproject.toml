@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "yid_public_package_template"
-version = "0.1.10"
+version = "0.1.11"
 description = "A template for a private Python package"
 authors = [
     {name = "Dmitrii Rashchenko", email = "dimitree54@gmail.com"},
