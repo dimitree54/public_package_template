@@ -1,4 +1,4 @@
-from private_package_template.module import mock_function_one, mock_function_two
+from public_package_template.module import mock_function_one, mock_function_two
 
 
 def test_mock_function_one():

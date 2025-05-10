@@ -1,4 +1,4 @@
-from private_package_template.nested.module import mock_function_three
+from public_package_template.nested.module import mock_function_three
 
 
 def test_mock_function_three():
