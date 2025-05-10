@@ -25,7 +25,7 @@ To adapt this template for your new package (let's call it "my_package"):
 5.  **Set up PyPI**
     1.  Go to: https://pypi.org/manage/account/token/
     2.  Click "Add API token", set the scope for your package
-    3.  Create a repository secret with the name PYPI_TOKEN
+    3.  Create a repository secret with the name PYPI_PUBLISH_TOKEN
 
 6.  **Once you push anything to main, a new tag will be created, built, and published to PyPI**
 
