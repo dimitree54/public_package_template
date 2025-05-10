@@ -1,6 +1,4 @@
-# Private Python Package Template
-
-For private packages hosting we use [CloudSmith](https://cloudsmith.com) because of their generous free tier.
+# Public Python Package Template
 
 ## Using This Template for Your Own Package (e.g., "my_package")
 
@@ -13,7 +11,7 @@ To adapt this template for your new package (let's call it "my_package"):
     *   Rename the main package directory in src dir
 
 3.  **Update `pyproject.toml`:**
-    *   **`[project].name`**: Change from `"private_package_template"` to `"my_package"`.
+    *   **`[project].name`**: Change from `"public_package_template"` to `"my_package"`.
     *   **`[project].urls`**: Update `Homepage` and `Repository` URLs to point to your new repository.
 
 4.  **Set up bump version:**
@@ -30,6 +28,6 @@ To adapt this template for your new package (let's call it "my_package"):
 6.  **Once you push anything to main, a new tag will be created, built, and published to PyPI**
 
 
-## Installing Your Published Private Package
+## Installing Your Published Public Package
 
 Then you can just pip install your package.
