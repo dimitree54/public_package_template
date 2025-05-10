@@ -1,0 +1,93 @@
+name: CI/CD
+
+on: [push, pull_request]
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    - name: Install dependencies
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install -e ".[dev]"
+    - name: Lint with ruff
+      run: |
+        source .venv/bin/activate
+        ruff check .
+
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+    - name: Install dependencies
+      run: |
+        uv venv
+        source .venv/bin/activate
+        uv pip install -e ".[dev]"
+    - name: Run tests in parallel
+      # env:
+        # OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Add any secrets your tests might need
+      run: |
+        source .venv/bin/activate
+        python -m pytest -xvs -n auto # Use -n auto for pytest-xdist
+  bump-version:
+    needs: [tests, ruff]
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Bump version
+        uses: Clinical-Genomics/bump2version-ci@v3
+        env:
+          BUMPVERSION_TOKEN: ${{ secrets.BUMPVERSION_TOKEN }}
+          BUMPVERSION_AUTHOR: auto_bump_version
+          BUMPVERSION_EMAIL: actions@github.com
+          GITHUB_REPOSITORY: ${{ github.repository }}
+  publish-to-cloudsmith:
+    needs: bump-version
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}        # the tag that triggered the job
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Build wheel and sdist
+        run: |
+          python -m pip install --upgrade build
+          python -m build               # creates dist/*.whl and dist/*.tar.gz
+      - name: Push to Cloudsmith
+        uses: cloudsmith-io/action@v0.6.14
+        with:
+          api-key:    ${{ secrets.CLOUDSMITH_API_KEY }}
+          command:    "push"
+          format:     "python"
+          owner:      "dimitree54"      # your Cloudsmith namespace
+          repo:       "private-package-template"  # your Cloudsmith repo slug
+          file:       "dist/*"          # uploads all artifacts
+          republish:  "false"            # safe if you re-tag the same version
+      - uses: actions/upload-artifact@v4
+        with:
+          name: python-package-dist
+          path: dist/

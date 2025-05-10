@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=67.8.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "private_package_template"
+version = "0.1.10"
+description = "A template for a private Python package"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+readme = "README.md"
+requires-python = ">=3.9,<4.0"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License", # Or your preferred license
+    "Operating System :: OS Independent",
+    "Private :: Do Not Upload", # Good practice for private packages
+]
+dependencies = [
+    # Add your package dependencies here
+    # e.g., "requests>=2.20"
+]
+
+[project.optional-dependencies]
+dev = [
+    "setuptools>=67.8.0",
+    "bump2version>=1.0.1",
+    "ruff",
+    "twine",
+    "wheel",
+    "pytest>=7.4.0",
+    "pytest-xdist>=3.3.1",
+    "build",
+    "uv>=0.1.16", # Add uv here for dev environment
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/private_package_template"
+Repository = "https://github.com/your-username/private_package_template"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = {find = {where = ["src"]}}
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src", ".",
+]
+
+[tool.ruff]
+line-length = 120
