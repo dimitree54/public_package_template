@@ -15,7 +15,6 @@ classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License", # Or your preferred license
     "Operating System :: OS Independent",
-    "Private :: Do Not Upload", # Good practice for private packages
 ]
 dependencies = [
     # Add your package dependencies here
