@@ -22,17 +22,14 @@ To adapt this template for your new package (let's call it "my_package"):
     3.  Create a repository secret with the name BUMPVERSION_TOKEN
     4.  It is recommended to make the main branch protected as every push/merge/commit to it will trigger a bump version.
 
-5.  **Set up CloudSmith**
-    1. Create a new repository (which will store your packages from this GitHub repository), preferable with the name of package (my_name)
-       1. If you just created an account, you will create your first repository as part of onboarding
-       2. If you already have an account, then go to https://app.cloudsmith.com/dimitree54/repositories
-    2. Use this new repo name in the file ci_cd.yml as a CloudSmith repo name
-    3. Go to https://app.cloudsmith.com/settings/api-keys, generate the API key 
-    4. Create a repository secret with the name CLOUDSMITH_API_KEY
+5.  **Set up PyPI**
+    1.  Go to: https://pypi.org/manage/account/token/
+    2.  Click "Add API token", set the scope for your package
+    3.  Create a repository secret with the name PYPI_TOKEN
 
-6.  **Once you push anything to master, a new tag will be created, built, and published to cloudsmith
+6.  **Once you push anything to main, a new tag will be created, built, and published to PyPI**
 
 
 ## Installing Your Published Private Package
 
-In the CloudSmith GUI you can get an extra_url and instructions that will help you to install your package
+Then you can just pip install your package.
