@@ -15,18 +15,62 @@ To adapt this template for your new package (let's call it "my_package"):
     *   **`[project].urls`**: Update `Homepage` and `Repository` URLs to point to your new repository.
 
 4.  **Set up bump version:**
-	1.	Go to: https://github.com/settings/personal-access-tokens/new?type=beta
-    2.	Set permission "Contents" to Read & Write
-    3.  Create a repository secret with the name BUMPVERSION_TOKEN
+    1.  Install and authenticate GitHub CLI:
+        ```bash
+        # Install GitHub CLI (if not already installed)
+        # macOS: brew install gh
+        # Linux: See https://cli.github.com/
+        
+        # Authenticate
+        gh auth login
+        ```
+    2.  Create a Personal Access Token:
+        *   Go to: https://github.com/settings/personal-access-tokens/new?type=beta
+        *   Set permission "Contents" to Read & Write
+        *   Copy the generated token
+    3.  Add the token to repository secrets:
+        ```bash
+        gh secret set BUMPVERSION_TOKEN --body "your_generated_token_here"
+        ```
     4.  It is recommended to make the main branch protected as every push/merge/commit to it will trigger a bump version.
 
 5.  **Set up PyPI**
-    1.  Go to: https://pypi.org/manage/account/token/
-    2.  Click "Add API token", set the scope for your package
-    3.  Create a repository secret with the name PYPI_PUBLISH_TOKEN
+    1.  Create PyPI API token:
+        *   Go to: https://pypi.org/manage/account/token/
+        *   Click "Add API token", set the scope for your package
+        *   Copy the generated token (starts with `pypi-`)
+    2.  Add the token to repository secrets:
+        ```bash
+        gh secret set PYPI_PUBLISH_TOKEN --body "pypi-your_token_here"
+        ```
 
-6.  **Once you push anything to main, a new tag will be created, built, and published to PyPI**
+6.  **Verify secrets setup:**
+    ```bash
+    # List all repository secrets
+    gh secret list
+    
+    # Check authentication status
+    gh auth status
+    ```
 
+7.  **Once you push anything to main, a new tag will be created, built, and published to PyPI**
+
+## Managing Repository Secrets via CLI
+
+### Additional useful commands:
+```bash
+# Set multiple secrets from .env file
+gh secret set -f .env
+
+# Delete a secret
+gh secret delete SECRET_NAME
+
+# Set organization-level secret
+gh secret set SECRET_NAME --org your-org
+
+# Open repository settings in browser
+gh browse --settings
+```
 
 ## Installing Your Published Public Package
 
